@@ -2391,6 +2391,7 @@ static void pci_set_msi_domain(struct pci_dev *dev)
 
 void pci_device_add(struct pci_dev *dev, struct pci_bus *bus)
 {
+	struct pci_host_bridge *host = pci_find_host_bridge(bus);
 	int ret;
 
 	pci_configure_device(dev);
@@ -2428,6 +2429,11 @@ void pci_device_add(struct pci_dev *dev, struct pci_bus *bus)
 
 	ret = pcibios_add_device(dev);
 	WARN_ON(ret < 0);
+
+	if (host->add_device) {
+		ret = host->add_device(dev);
+		WARN_ON(ret < 0);
+	}
 
 	/* Set up MSI IRQ domain */
 	pci_set_msi_domain(dev);

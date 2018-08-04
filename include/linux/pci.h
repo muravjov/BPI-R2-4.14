@@ -517,6 +517,7 @@ struct pci_host_bridge {
 			resource_size_t start,
 			resource_size_t size,
 			resource_size_t align);
+	int (*add_device)(struct pci_dev *dev);
 	unsigned long	private[0] ____cacheline_aligned;
 };
 
