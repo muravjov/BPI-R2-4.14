@@ -1,6 +1,6 @@
-ifeq ($(CONFIG_MTK_COMBO),y)
-	ccflags-y += -I$(src)/inc/
-	ccflags-y += -I$(src)/../
+ifneq ($(CONFIG_MTK_COMBO),)
+	ccflags-y += -I$(srctree)/$(src)/inc/
+	ccflags-y += -I$(srctree)/$(src)/../
 
 ifneq ($(filter "MT6630",$(CONFIG_MTK_COMBO_CHIP)),)
 	ccflags-y += -D MTK_WCN_WLAN_GEN3
