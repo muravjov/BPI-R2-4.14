@@ -106,6 +106,10 @@
 
 &btif {
 	status = "okay";
+
+        bluetooth {
+                status = "okay";
+        };
 };
 
 &cir {
@@ -144,6 +148,13 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 	};
+};
+
+&rtkgsw {
+	mediatek,mdio = <&mdio>;
+	mediatek,reset-pin = <&pio 54 0>;
+	mediatek,port_map = "wllll";
+	status = "okay";
 };
 
 &i2c1 {
@@ -207,14 +218,21 @@
 	};
 };
 
-&pcie {
+&pcie0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pcie0_pins>, <&pcie1_pins>;
+	pinctrl-0 = <&pcie0_pins>;
 	status = "okay";
 
 	pcie@0,0 {
 		status = "okay";
 	};
+};
+
+
+&pcie1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie1_pins>;
+	status = "okay";
 
 	pcie@1,0 {
 		status = "okay";
@@ -541,5 +559,9 @@
 &watchdog {
 	pinctrl-names = "default";
 	pinctrl-0 = <&watchdog_pins>;
+	status = "okay";
+};
+
+&wmac {
 	status = "okay";
 };
