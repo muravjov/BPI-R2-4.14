@@ -1893,6 +1893,44 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
 }
 EXPORT_SYMBOL(ieee80211_sta_register_airtime);
 
+void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
+					  struct sta_info *sta, u8 ac,
+					  u16 tx_airtime, bool tx_completed)
+{
+	int tx_pending;
+
+	if (!wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL))
+		return;
+
+	if (!tx_completed) {
+		if (sta)
+			atomic_add(tx_airtime,
+				   &sta->airtime[ac].aql_tx_pending);
+
+		atomic_add(tx_airtime, &local->aql_total_pending_airtime);
+		return;
+	}
+
+	if (sta) {
+		tx_pending = atomic_sub_return(tx_airtime,
+					       &sta->airtime[ac].aql_tx_pending);
+		if (WARN_ONCE(tx_pending < 0,
+			      "STA %pM AC %d txq pending airtime underflow: %u, %u",
+			      sta->addr, ac, tx_pending, tx_airtime))
+			atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending,
+				       tx_pending, 0);
+	}
+
+	tx_pending = atomic_sub_return(tx_airtime,
+				       &local->aql_total_pending_airtime);
+	if (WARN_ONCE(tx_pending < 0,
+		      "Device %s AC %d pending airtime underflow: %u, %u",
+		      wiphy_name(local->hw.wiphy), ac, tx_pending,
+		      tx_airtime))
+		atomic_cmpxchg(&local->aql_total_pending_airtime,
+			       tx_pending, 0);
+}
+
 int sta_info_move_state(struct sta_info *sta,
 			enum ieee80211_sta_state new_state)
 {
