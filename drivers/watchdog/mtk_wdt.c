@@ -317,19 +317,7 @@ static const struct watchdog_ops mtk_wdt_ops = {
 	.set_timeout	= mtk_wdt_set_timeout,
 	.restart	= mtk_wdt_restart,
 };
-/*
-#ifdef CONFIG_FIQ_GLUE
-static void wdt_fiq(void *arg, void *regs, void *svc_sp)
-{
-	unsigned int wdt_mode_val;
-	void __iomem *wdt_base = ((struct mtk_wdt_dev *)arg)->wdt_base;
 
-	wdt_mode_val = __raw_readl(wdt_base + WDT_STATUS);
-	writel(wdt_mode_val, wdt_base + WDT_NONRST_REG);
-
-	aee_wdt_fiq_info(arg, regs, svc_sp);
-}
-#else*/
 static void wdt_report_info(void)
 {
 	struct task_struct *task;
@@ -359,7 +347,6 @@ static irqreturn_t mtk_wdt_isr(int irq, void *dev_id)
 
 	return IRQ_HANDLED;
 }
-//#endif
 
 static int mtk_wdt_probe(struct platform_device *pdev)
 {
@@ -385,19 +372,13 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-//#ifndef CONFIG_FIQ_GLUE
 	err = request_irq(mtk_wdt->wdt_irq_id, (irq_handler_t)mtk_wdt_isr, IRQF_TRIGGER_NONE, DRV_NAME, mtk_wdt);
-/*#else
-	mtk_wdt->wdt_irq_id = get_hardware_irq(mtk_wdt->wdt_irq_id);
-	err = request_fiq(mtk_wdt->wdt_irq_id, wdt_fiq, IRQF_TRIGGER_FALLING, mtk_wdt);
-#endif */
 	if (err != 0) {
 		pr_err("mtk_wdt_probe : failed to request irq (%d)\n", err);
 		return err;
 	}
 
 	toprgu_base = mtk_wdt->wdt_base;
-	//wdt_dev = &mtk_wdt->wdt_dev;
 
 	mtk_wdt->wdt_dev.info = &mtk_wdt_info;
 	mtk_wdt->wdt_dev.ops = &mtk_wdt_ops;
@@ -424,7 +405,7 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 
 	mtk_wdt->restart_handler.notifier_call = mtk_reset_handler;
 	mtk_wdt->restart_handler.priority = 128;
-
+/*
 	if (arm_pm_restart) {
 		dev_info(&pdev->dev, "register restart_handler on reboot_notifier_list for psci reset\n");
 		err = register_reboot_notifier(&mtk_wdt->restart_handler);
@@ -440,22 +421,13 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 
 	dev_info(&pdev->dev, "Watchdog enabled (timeout=%d sec, nowayout=%d)\n",
 			mtk_wdt->wdt_dev.timeout, nowayout);
+*/
+//	writel(WDT_REQ_MODE_KEY | (__raw_readl(mtk_wdt->wdt_base + WDT_REQ_MODE) &
+//		(~WDT_REQ_MODE_DEBUG_EN)), mtk_wdt->wdt_base + WDT_REQ_MODE);
 
-	writel(WDT_REQ_MODE_KEY | (__raw_readl(mtk_wdt->wdt_base + WDT_REQ_MODE) &
-		(~WDT_REQ_MODE_DEBUG_EN)), mtk_wdt->wdt_base + WDT_REQ_MODE);
-
+	//without this toprgu and the (de)assert functions mt6625l wifi does not work
 	toprgu_register_reset_controller(pdev, WDT_SWSYSRST);
 
-	/* enable scpsys thermal and thermal_controller request, and set to reset directly mode */
-/*	tmp = ioread32(mtk_wdt->wdt_base + WDT_REQ_MODE) | (1 << 18) | (1 << 0);
-	tmp |= WDT_REQ_MODE_KEY;
-	iowrite32(tmp, mtk_wdt->wdt_base + WDT_REQ_MODE);
-
-	tmp = ioread32(mtk_wdt->wdt_base + WDT_REQ_IRQ_EN);
-	tmp &= ~((1 << 18) | (1 << 0));
-	tmp |= WDT_REQ_IRQ_KEY;
-	iowrite32(tmp, mtk_wdt->wdt_base + WDT_REQ_IRQ_EN);
-*/
 	return 0;
 }
 
@@ -504,96 +476,7 @@ static struct platform_driver mtk_wdt_driver = {
 };
 
 module_platform_driver(mtk_wdt_driver);
-/*
-static int wk_proc_cmd_read(struct seq_file *s, void *v)
-{
-	unsigned int enabled = 1;
 
-	if (!(ioread32(toprgu_base + WDT_MODE) & WDT_MODE_EN))
-		enabled = 0;
-
-	seq_printf(s, "enabled timeout\n%-4d %-8d\n", enabled, wdt_dev->timeout);
-
-	return 0;
-}
-
-static int wk_proc_cmd_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, wk_proc_cmd_read, NULL);
-}
-
-static ssize_t wk_proc_cmd_write(struct file *file, const char *buf, size_t count, loff_t *data)
-{
-	int ret;
-	int enable;
-	int timeout;
-	char wk_cmd_buf[256];
-
-	if (count == 0)
-		return -1;
-
-	if (count > 255)
-		count = 255;
-
-	ret = copy_from_user(wk_cmd_buf, buf, count);
-	if (ret < 0)
-		return -1;
-
-	wk_cmd_buf[count] = '\0';
-
-	pr_debug("Write %s\n", wk_cmd_buf);
-
-	ret = sscanf(wk_cmd_buf, "%d %d", &enable, &timeout);
-	if (ret != 2)
-		pr_debug("%s: expect 2 numbers\n", __func__);
-
-	pr_debug("[WDK] enable=%d  timeout=%d\n", enable, timeout);
-
-	if (timeout > 20 && timeout <= WDT_MAX_TIMEOUT) {
-		wdt_dev->timeout = timeout;
-		mtk_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
-	} else {
-		pr_err("[WDK] The timeout(%d) should bigger than 20 and not bigger than %d\n",
-				timeout, WDT_MAX_TIMEOUT);
-
-	}
-
-	if (enable == 1) {
-		mtk_wdt_start(wdt_dev);
-		set_bit(WDOG_ACTIVE, &wdt_dev->status);
-		pr_err("[WDK] enable wdt\n");
-	} else if (enable == 0) {
-		mtk_wdt_stop(wdt_dev);
-		clear_bit(WDOG_ACTIVE, &wdt_dev->status);
-		pr_err("[WDK] disable wdt\n");
-	}
-
-	return count;
-}
-
-static const struct file_operations wk_proc_cmd_fops = {
-	.owner = THIS_MODULE,
-	.open = wk_proc_cmd_open,
-	.read = seq_read,
-	.write = wk_proc_cmd_write,
-	.llseek = seq_lseek,
-	.release = single_release,
-};
-
-static int __init wk_proc_init(void)
-{
-	struct proc_dir_entry *de = proc_create("wdk", 0660, NULL, &wk_proc_cmd_fops);
-
-	if (!de)
-		pr_err("[wk_proc_init]: create /proc/wdk failed\n");
-
-	pr_debug("[WDK] Initialize proc\n");
-
-	return 0;
-}
-
-late_initcall(wk_proc_init);
-*/
 module_param(timeout, uint, 0);
 MODULE_PARM_DESC(timeout, "Watchdog heartbeat in seconds");
 
