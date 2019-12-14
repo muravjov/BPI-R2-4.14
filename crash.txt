@@ -1,0 +1,355 @@
+[   41.514023] [WMT-DETECT][I]wmt_detect_open:open major 154 minor 0 (pid 594)                                                                      
+[   41.514090] [WMT-DETECT][I]wmt_detect_unlocked_ioctl:cmd (-2147191037),arg(0)                                                                    
+[   41.514144] [WMT-DETECT][I]wmt_detect_unlocked_ioctl:cmd (1074034433),arg(30243)                                                                 
+[   41.514149] set current consys chipid (0x7623)                                                                                                   
+[   41.514157] [WMT-DETECT][I]wmt_detect_unlocked_ioctl:cmd (-2147191036),arg(30243)                                                                
+[   41.514163] [WMT-MOD-INIT][I]do_common_drv_init:start to do common driver init, chipid:0x00007623                                                
+[   41.520065] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6620.defAnt'.                                                                 
+[   41.520078] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6628.defAnt'.                                                                 
+[   41.520086] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6630.defAnt'.                                                                 
+[   41.521815] [WMT-CONSYS-HW][E]mtk_wmt_probe(172):CanNot get consys reset. ret=-517                                                               
+[   41.522387] [WMT-MOD-INIT][I]do_common_drv_init:finish common driver init                                                                        
+[   41.522396] [WLAN-MOD-INIT][I]do_wlan_drv_init:start to do wlan module init 0x7623                                                               
+[   41.522699] [MTK-WIFI] WIFI_init: mtk_wmt_WIFI_chrdev driver(major 155) installed.                                                               
+[   41.522707] [WLAN-MOD-INIT][I]do_wlan_drv_init:WMT-WIFI char dev init, ret:0                                                                     
+[   41.523394] [WLAN-MOD-INIT][I]do_wlan_drv_init:WLAN-GEN2 driver init, ret:0                                                                      
+[   41.523404] [WLAN-MOD-INIT][I]do_wlan_drv_init:finish wlan module init                                                                           
+[   41.524116] mt7623consys 18070000.consys: Unbalanced pm_runtime_enable!                                                                          
+[   41.524487] [WMT-CONSYS-HW][E]mtk_wmt_probe(172):CanNot get consys reset. ret=-517                                                               
+[   41.525465] [WMT-DETECT][I]wmt_detect_close:close major 154 minor 0 (pid 594)                                                                    
+[   44.571929] [WMT-CORE][E]opfunc_hif_conf(874):WMT-CORE: WMT HIF info added                                                                       
+[   44.572321] vcn18: mode operation not allowed                                                                                                    
+[   44.573588] ------------[ cut here ]------------                                                                                                 
+[   44.573618] WARNING: CPU: 1 PID: 597 at drivers/reset/core.c:298 reset_control_reset+0x138/0x170                                                 
+[   44.573622] Modules linked in:                                                                                                                   
+[   44.573635] CPU: 1 PID: 597 Comm: mtk_wmtd Not tainted 5.5.0-rc1-bpi-r2-wifi #25                                                                 
+[   44.573638] Hardware name: Mediatek Cortex-A7 (Device Tree)                                                                                      
+[   44.573642] Backtrace:                                                                                                                           
+[   44.573657] [<c010f09c>] (dump_backtrace) from [<c010f43c>] (show_stack+0x20/0x24)                                                               
+[   44.573666]  r7:0000012a r6:600f0013 r5:00000000 r4:c13c491c                                                                                     
+[   44.573678] [<c010f41c>] (show_stack) from [<c0c95e9c>] (dump_stack+0xc8/0xdc)                                                                   
+[   44.573687] [<c0c95dd4>] (dump_stack) from [<c0127f74>] (__warn+0xe0/0x108)                                                                      
+[   44.573695]  r7:0000012a r6:00000009 r5:c05c9ec4 r4:c1034868                                                                                     
+[   44.573703] [<c0127e94>] (__warn) from [<c0128344>] (warn_slowpath_fmt+0x70/0xc0)                                                                
+[   44.573710]  r7:0000012a r6:c1034868 r5:c1304e48 r4:00000000                                                                                     
+[   44.573719] [<c01282d8>] (warn_slowpath_fmt) from [<c05c9ec4>] (reset_control_reset+0x138/0x170)                                                 
+[   44.573728]  r9:00000001 r8:00000000 r7:c10d591c r6:c138ca38 r5:c148dc34 r4:fffffdfb                                                             
+[   44.573740] [<c05c9d8c>] (reset_control_reset) from [<c06c8a40>] (mtk_wcn_consys_hw_reg_ctrl+0x130/0x6d8)                                        
+[   44.573756]  r7:c10d591c r6:c138ca38 r5:c148dc34 r4:c13d8398                                                                                     
+[   44.573767] [<c06c8910>] (mtk_wcn_consys_hw_reg_ctrl) from [<c06c91a0>] (mtk_wcn_consys_hw_pwr_on+0x50/0xc4)                                     
+[   44.573776]  r10:00000001 r9:00000000 r8:00000000 r7:c144af74 r6:e99a5eb4 r5:00000000                                                            
+[   44.573779]  r4:c138ca38                                                                                                                         
+[   44.573790] [<c06c9150>] (mtk_wcn_consys_hw_pwr_on) from [<c06cac3c>] (wmt_plat_pwr_ctrl+0xa0/0x124)                                             
+[   44.573796]  r5:c13d87a0 r4:c138ca24                                                                                                             
+[   44.573807] [<c06cab9c>] (wmt_plat_pwr_ctrl) from [<c06a5fe8>] (wmt_ctrl_hw_pwr_on+0x68/0x88)                                                    
+[   44.573813]  r5:e99a5eb8 r4:c1304e48                                                                                                             
+[   44.573822] [<c06a5f80>] (wmt_ctrl_hw_pwr_on) from [<c06a60d8>] (wmt_ctrl+0x44/0xc0)                                                             
+[   44.573831] [<c06a6094>] (wmt_ctrl) from [<c06a2458>] (wmt_core_ctrl+0x58/0xe4)                                                                  
+[   44.573839] [<c06a2400>] (wmt_core_ctrl) from [<c06a456c>] (opfunc_pwr_on+0xa0/0x24c)                                                            
+[   44.573848]  r10:c144bccc r9:c1048e74 r8:c0ff869c r7:c144af74 r6:c1046f1c r5:c0d7ab88                                                            
+[   44.573852]  r4:00000002                                                                                                                         
+[   44.573861] [<c06a44cc>] (opfunc_pwr_on) from [<c06a48e4>] (opfunc_func_on+0x1cc/0x324)                                                          
+[   44.573870]  r10:c144b544 r9:c06a9468 r8:c148dc04 r7:c144bccc r6:c144b528 r5:00000009                                                            
+[   44.573874]  r4:c144af74                                                                                                                         
+[   44.573883] [<c06a4718>] (opfunc_func_on) from [<c06a2374>] (wmt_core_opid_handler+0x34/0x54)                                                    
+[   44.573891]  r8:c148dc04 r7:00000000 r6:c144b528 r5:c144b500 r4:c144bccc                                                                         
+[   44.573900] [<c06a2340>] (wmt_core_opid_handler) from [<c06a23c0>] (wmt_core_opid+0x2c/0x6c)                                                     
+[   44.573910] [<c06a2394>] (wmt_core_opid) from [<c06abb7c>] (wmtd_thread+0x174/0x254)                                                             
+[   44.573920] [<c06aba08>] (wmtd_thread) from [<c014d9a0>] (kthread+0x154/0x158)                                                                   
+[   44.573929]  r10:e9a5735c r9:c06aba08 r8:c144b500 r7:eacb3d8c r6:e99a4000 r5:eac8f1c0                                                            
+[   44.573933]  r4:e9a57340                                                                                                                         
+[   44.573941] [<c014d84c>] (kthread) from [<c01010e8>] (ret_from_fork+0x14/0x2c)                                                                   
+[   44.573946] Exception stack(0xe99a5fb0 to 0xe99a5ff8)                                                                                            
+[   44.573954] 5fa0:                                     00000000 00000000 00000000 00000000                                                        
+[   44.573962] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000                                                        
+[   44.573969] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000                                                                          
+[   44.573978]  r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:c014d84c                                                            
+[   44.573983]  r4:eac8f1c0 r3:00000001                                                                                                             
+[   44.573987] ---[ end trace 37e62032785e0aec ]---                                                                                                 
+[   44.574221] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.613126] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.653139] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.693127] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.733151] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.773148] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.813152] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.853148] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.893123] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   44.933124] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   45.033484] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6620.defAnt'.                                                                 
+[   45.033496] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6628.defAnt'.                                                                 
+[   45.033504] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6630.defAnt'.                                                                 
+[   45.036206] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(740):**********************ERROR, ERROR, ERROR**************************                       
+[   45.036219] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(745):BTIF Tx IRQ happened 512 times (continiously), between 1576335016.740705 and 742979.742979
+[   49.612846] [MTK-WIFI] WIFI_open: WIFI_open: major 155 minor 0 (pid 592)                                                                         
+[   49.612916] [MTK-WIFI] WIFI_write: WIFI_write A                                                                                                  
+                                                                                                                                                    
+[   49.612929] [WMT-PLAT][W]wmt_plat_wake_lock_ctrl:WMT-PLAT: wakelock status(1), counter(2)                                                        
+[   65.283150] [WMT-DEV][E]wmt_dev_rx_timeout(1430):gRxCount != 0 (-1), reset it!                                                                   
+[   65.283165] [WMT-CTRL][E]wmt_ctrl_rx(263):wmt_dev_rx_timeout: timeout,jiffies(4294943808),timeoutvalue(20000)                                    
+[   65.283172] [WMT-CORE][E]wmt_core_rx(346):WMT-CORE: wmt_core_ctrl failed: WMT_CTRL_RX, iRet:-1                                                   
+[   65.283245] 0x01 0x08 0x10 0x00 0x02 0x01 0x00 0x01 0x08 0x00 0x00 0x80 0x00 0x00 0x00 0x00                                                      
+[   65.283267] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 348, (0)                                                         
+[   65.283275] [WMT-CORE][E]wmt_core_reg_rw_raw(566):Rx REG_EVT fail!(-1) len(0, 16)                                                                
+[   65.283281] [WMT-CORE][E]wmt_core_hw_check(792):get hwcode (chip id) fail (-3)                                                                   
+[   65.283286] [WMT-CORE][E]wmt_core_stp_init(686):hw_check fail:-2                                                                                 
+[   65.283292] [WMT-CORE][E]opfunc_pwr_on(918):WMT-CORE: wmt_core_stp_init fail (-4)                                                                
+[   65.283297] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 919, (0)                                                         
+[   65.283664] vcn18: mode operation not allowed                                                                                                    
+[   65.283701] vcn18: mode operation not allowed                                                                                                    
+[   65.284917] ------------[ cut here ]------------                                                                                                 
+[   65.284947] WARNING: CPU: 1 PID: 597 at drivers/reset/core.c:298 reset_control_reset+0x138/0x170                                                 
+[   65.284952] Modules linked in:                                                                                                                   
+[   65.284965] CPU: 1 PID: 597 Comm: mtk_wmtd Tainted: G        W         5.5.0-rc1-bpi-r2-wifi #25                                                 
+[   65.284969] Hardware name: Mediatek Cortex-A7 (Device Tree)                                                                                      
+[   65.284972] Backtrace:                                                                                                                           
+[   65.284988] [<c010f09c>] (dump_backtrace) from [<c010f43c>] (show_stack+0x20/0x24)                                                               
+[   65.284997]  r7:0000012a r6:60000013 r5:00000000 r4:c13c491c                                                                                     
+[   65.285008] [<c010f41c>] (show_stack) from [<c0c95e9c>] (dump_stack+0xc8/0xdc)                                                                   
+[   65.285019] [<c0c95dd4>] (dump_stack) from [<c0127f74>] (__warn+0xe0/0x108)                                                                      
+[   65.285026]  r7:0000012a r6:00000009 r5:c05c9ec4 r4:c1034868                                                                                     
+[   65.285034] [<c0127e94>] (__warn) from [<c0128344>] (warn_slowpath_fmt+0x70/0xc0)                                                                
+[   65.285044]  r7:0000012a r6:c1034868 r5:c1304e48 r4:00000000                                                                                     
+[   65.285072] [<c01282d8>] (warn_slowpath_fmt) from [<c05c9ec4>] (reset_control_reset+0x138/0x170)                                                 
+[   65.285090]  r9:00000001 r8:00000000 r7:c10d591c r6:c138ca38 r5:c148dc34 r4:fffffdfb                                                             
+[   65.285116] [<c05c9d8c>] (reset_control_reset) from [<c06c8a40>] (mtk_wcn_consys_hw_reg_ctrl+0x130/0x6d8)                                        
+[   65.285125]  r7:c10d591c r6:c138ca38 r5:c148dc34 r4:c13d8398                                                                                     
+[   65.285138] [<c06c8910>] (mtk_wcn_consys_hw_reg_ctrl) from [<c06c91a0>] (mtk_wcn_consys_hw_pwr_on+0x50/0xc4)                                     
+[   65.285158]  r10:00000001 r9:00000000 r8:00000000 r7:c144af74 r6:e99a5eb4 r5:00000000                                                            
+[   65.285169]  r4:c138ca38                                                                                                                         
+[   65.285186] [<c06c9150>] (mtk_wcn_consys_hw_pwr_on) from [<c06cac3c>] (wmt_plat_pwr_ctrl+0xa0/0x124)                                             
+[   65.285193]  r5:c13d87a0 r4:c138ca24                                                                                                             
+[   65.285210] [<c06cab9c>] (wmt_plat_pwr_ctrl) from [<c06a5fe8>] (wmt_ctrl_hw_pwr_on+0x68/0x88)                                                    
+[   65.285226]  r5:e99a5eb8 r4:c1304e48                                                                                                             
+[   65.285243] [<c06a5f80>] (wmt_ctrl_hw_pwr_on) from [<c06a60d8>] (wmt_ctrl+0x44/0xc0)                                                             
+[   65.285254] [<c06a6094>] (wmt_ctrl) from [<c06a2458>] (wmt_core_ctrl+0x58/0xe4)                                                                  
+[   65.285265] [<c06a2400>] (wmt_core_ctrl) from [<c06a456c>] (opfunc_pwr_on+0xa0/0x24c)                                                            
+[   65.285296]  r10:c144bccc r9:c1048e74 r8:c0ff869c r7:c144af74 r6:c1046f1c r5:c0d7ab88                                                            
+[   65.285302]  r4:00000001                                                                                                                         
+[   65.285313] [<c06a44cc>] (opfunc_pwr_on) from [<c06a48e4>] (opfunc_func_on+0x1cc/0x324)                                                          
+[   65.285339]  r10:c144b544 r9:c06a9468 r8:c148dc04 r7:c144bccc r6:c144b528 r5:00000009                                                            
+[   65.285344]  r4:c144af74                                                                                                                         
+[   65.285363] [<c06a4718>] (opfunc_func_on) from [<c06a2374>] (wmt_core_opid_handler+0x34/0x54)                                                    
+[   65.285381]  r8:c148dc04 r7:00000000 r6:c144b528 r5:c144b500 r4:c144bccc                                                                         
+[   65.285399] [<c06a2340>] (wmt_core_opid_handler) from [<c06a23c0>] (wmt_core_opid+0x2c/0x6c)                                                     
+[   65.285420] [<c06a2394>] (wmt_core_opid) from [<c06abb7c>] (wmtd_thread+0x174/0x254)                                                             
+[   65.285431] [<c06aba08>] (wmtd_thread) from [<c014d9a0>] (kthread+0x154/0x158)                                                                   
+[   65.285451]  r10:e9a5735c r9:c06aba08 r8:c144b500 r7:eacb3d8c r6:e99a4000 r5:eac8f1c0                                                            
+[   65.285461]  r4:e9a57340                                                                                                                         
+[   65.285474] [<c014d84c>] (kthread) from [<c01010e8>] (ret_from_fork+0x14/0x2c)                                                                   
+[   65.285485] Exception stack(0xe99a5fb0 to 0xe99a5ff8)                                                                                            
+[   65.285503] 5fa0:                                     00000000 00000000 00000000 00000000                                                        
+[   65.285514] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000                                                        
+[   65.285535] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000                                                                          
+[   65.285551]  r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:c014d84c                                                            
+[   65.285556]  r4:eac8f1c0 r3:00000001                                                                                                             
+[   65.285561] ---[ end trace 37e62032785e0aed ]---                                                                                                 
+[   65.285835] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.323152] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.373159] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.413168] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.453165] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.493163] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.533163] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.573163] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.613162] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.653163] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   65.753451] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6620.defAnt'.                                                                 
+[   65.753464] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6628.defAnt'.                                                                 
+[   65.753472] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6630.defAnt'.                                                                 
+[   65.753844] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(740):**********************ERROR, ERROR, ERROR**************************                       
+[   65.753857] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(745):BTIF Tx IRQ happened 512 times (continiously), between 1576335016.740705 and 460605.460605
+[   85.763161] [WMT-DEV][E]wmt_dev_rx_timeout(1430):gRxCount != 0 (-1), reset it!                                                                   
+[   85.763175] [WMT-CTRL][E]wmt_ctrl_rx(263):wmt_dev_rx_timeout: timeout,jiffies(4294945856),timeoutvalue(20000)                                    
+[   85.763182] [WMT-CORE][E]wmt_core_rx(346):WMT-CORE: wmt_core_ctrl failed: WMT_CTRL_RX, iRet:-1                                                   
+[   85.763254] 0x01 0x08 0x10 0x00 0x02 0x01 0x00 0x01 0x08 0x00 0x00 0x80 0x00 0x00 0x00 0x00 0x01 0x08 0x10 0x00 0x02 0x01 0x00 0x01 0x08 0x00 0x 
+[   85.763294] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 348, (0)                                                         
+[   85.763302] [WMT-CORE][E]wmt_core_reg_rw_raw(566):Rx REG_EVT fail!(-1) len(0, 16)                                                                
+[   85.763308] [WMT-CORE][E]wmt_core_hw_check(792):get hwcode (chip id) fail (-3)                                                                   
+[   85.763313] [WMT-CORE][E]wmt_core_stp_init(686):hw_check fail:-2                                                                                 
+[   85.763319] [WMT-CORE][E]opfunc_pwr_on(918):WMT-CORE: wmt_core_stp_init fail (-4)                                                                
+[   85.763323] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 919, (0)                                                         
+[   85.763687] vcn18: mode operation not allowed                                                                                                    
+[   85.763723] vcn18: mode operation not allowed                                                                                                    
+[   85.764588] ------------[ cut here ]------------                                                                                                 
+[   85.764616] WARNING: CPU: 1 PID: 597 at drivers/reset/core.c:298 reset_control_reset+0x138/0x170                                                 
+[   85.764621] Modules linked in:                                                                                                                   
+[   85.764633] CPU: 1 PID: 597 Comm: mtk_wmtd Tainted: G        W         5.5.0-rc1-bpi-r2-wifi #25                                                 
+[   85.764637] Hardware name: Mediatek Cortex-A7 (Device Tree)                                                                                      
+[   85.764640] Backtrace:                                                                                                                           
+[   85.764655] [<c010f09c>] (dump_backtrace) from [<c010f43c>] (show_stack+0x20/0x24)                                                               
+[   85.764664]  r7:0000012a r6:600f0013 r5:00000000 r4:c13c491c                                                                                     
+[   85.764676] [<c010f41c>] (show_stack) from [<c0c95e9c>] (dump_stack+0xc8/0xdc)                                                                   
+[   85.764686] [<c0c95dd4>] (dump_stack) from [<c0127f74>] (__warn+0xe0/0x108)                                                                      
+[   85.764693]  r7:0000012a r6:00000009 r5:c05c9ec4 r4:c1034868                                                                                     
+[   85.764701] [<c0127e94>] (__warn) from [<c0128344>] (warn_slowpath_fmt+0x70/0xc0)                                                                
+[   85.764708]  r7:0000012a r6:c1034868 r5:c1304e48 r4:00000000                                                                                     
+[   85.764717] [<c01282d8>] (warn_slowpath_fmt) from [<c05c9ec4>] (reset_control_reset+0x138/0x170)                                                 
+[   85.764727]  r9:00000001 r8:00000000 r7:c10d591c r6:c138ca38 r5:c148dc34 r4:fffffdfb                                                             
+[   85.764739] [<c05c9d8c>] (reset_control_reset) from [<c06c8a40>] (mtk_wcn_consys_hw_reg_ctrl+0x130/0x6d8)                                        
+[   85.764746]  r7:c10d591c r6:c138ca38 r5:c148dc34 r4:c13d8398                                                                                     
+[   85.764757] [<c06c8910>] (mtk_wcn_consys_hw_reg_ctrl) from [<c06c91a0>] (mtk_wcn_consys_hw_pwr_on+0x50/0xc4)                                     
+[   85.764766]  r10:00000001 r9:00000000 r8:00000000 r7:c144af74 r6:e99a5eb4 r5:00000000                                                            
+[   85.764770]  r4:c138ca38                                                                                                                         
+[   85.764782] [<c06c9150>] (mtk_wcn_consys_hw_pwr_on) from [<c06cac3c>] (wmt_plat_pwr_ctrl+0xa0/0x124)                                             
+[   85.764787]  r5:c13d87a0 r4:c138ca24                                                                                                             
+[   85.764798] [<c06cab9c>] (wmt_plat_pwr_ctrl) from [<c06a5fe8>] (wmt_ctrl_hw_pwr_on+0x68/0x88)                                                    
+[   85.764804]  r5:e99a5eb8 r4:c1304e48                                                                                                             
+[   85.764813] [<c06a5f80>] (wmt_ctrl_hw_pwr_on) from [<c06a60d8>] (wmt_ctrl+0x44/0xc0)                                                             
+[   85.764821] [<c06a6094>] (wmt_ctrl) from [<c06a2458>] (wmt_core_ctrl+0x58/0xe4)                                                                  
+[   85.764830] [<c06a2400>] (wmt_core_ctrl) from [<c06a456c>] (opfunc_pwr_on+0xa0/0x24c)                                                            
+[   85.764840]  r10:c144bccc r9:c1048e74 r8:c0ff869c r7:c144af74 r6:c1046f1c r5:c0d7ab88                                                            
+[   85.764844]  r4:00000000                                                                                                                         
+[   85.764853] [<c06a44cc>] (opfunc_pwr_on) from [<c06a48e4>] (opfunc_func_on+0x1cc/0x324)                                                          
+[   85.764862]  r10:c144b544 r9:c06a9468 r8:c148dc04 r7:c144bccc r6:c144b528 r5:00000009                                                            
+[   85.764866]  r4:c144af74                                                                                                                         
+[   85.764875] [<c06a4718>] (opfunc_func_on) from [<c06a2374>] (wmt_core_opid_handler+0x34/0x54)                                                    
+[   85.764883]  r8:c148dc04 r7:00000000 r6:c144b528 r5:c144b500 r4:c144bccc                                                                         
+[   85.764892] [<c06a2340>] (wmt_core_opid_handler) from [<c06a23c0>] (wmt_core_opid+0x2c/0x6c)                                                     
+[   85.764903] [<c06a2394>] (wmt_core_opid) from [<c06abb7c>] (wmtd_thread+0x174/0x254)                                                             
+[   85.764913] [<c06aba08>] (wmtd_thread) from [<c014d9a0>] (kthread+0x154/0x158)                                                                   
+[   85.764925]  r10:e9a5735c r9:c06aba08 r8:c144b500 r7:eacb3d8c r6:e99a4000 r5:eac8f1c0                                                            
+[   85.764940]  r4:e9a57340                                                                                                                         
+[   85.764961] [<c014d84c>] (kthread) from [<c01010e8>] (ret_from_fork+0x14/0x2c)                                                                   
+[   85.764973] Exception stack(0xe99a5fb0 to 0xe99a5ff8)                                                                                            
+[   85.764992] 5fa0:                                     00000000 00000000 00000000 00000000                                                        
+[   85.765004] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000                                                        
+[   85.765012] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000                                                                          
+[   85.765022]  r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:c014d84c                                                            
+[   85.765038]  r4:eac8f1c0 r3:00000001                                                                                                             
+[   85.765048] ---[ end trace 37e62032785e0aee ]---                                                                                                 
+[   85.765360] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   85.803161] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   85.843175] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   85.883161] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   85.923159] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   85.963155] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   86.003155] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   86.043155] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   86.083155] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   86.123155] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[   86.223465] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6620.defAnt'.                                                                 
+[   86.223477] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6628.defAnt'.                                                                 
+[   86.223484] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6630.defAnt'.                                                                 
+[   86.223863] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(740):**********************ERROR, ERROR, ERROR**************************                       
+[   86.223875] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(745):BTIF Tx IRQ happened 512 times (continiously), between 1576335016.740705 and 930608.930608
+[  106.243173] [WMT-DEV][E]wmt_dev_rx_timeout(1430):gRxCount != 0 (-1), reset it!                                                                   
+[  106.243187] [WMT-CTRL][E]wmt_ctrl_rx(263):wmt_dev_rx_timeout: timeout,jiffies(4294947904),timeoutvalue(20000)                                    
+[  106.243194] [WMT-CORE][E]wmt_core_rx(346):WMT-CORE: wmt_core_ctrl failed: WMT_CTRL_RX, iRet:-1                                                   
+[  106.243267] 0x01 0x08 0x10 0x00 0x02 0x01 0x00 0x01 0x08 0x00 0x00 0x80 0x00 0x00 0x00 0x00 0x01 0x08 0x10 0x00 0x02 0x01 0x00 0x01 0x08 0x00 0x 
+[  106.243324] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 348, (0)                                                         
+[  106.243331] [WMT-CORE][E]wmt_core_reg_rw_raw(566):Rx REG_EVT fail!(-1) len(0, 16)                                                                
+[  106.243337] [WMT-CORE][E]wmt_core_hw_check(792):get hwcode (chip id) fail (-3)                                                                   
+[  106.243342] [WMT-CORE][E]wmt_core_stp_init(686):hw_check fail:-2                                                                                 
+[  106.243348] [WMT-CORE][E]opfunc_pwr_on(918):WMT-CORE: wmt_core_stp_init fail (-4)                                                                
+[  106.243353] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 919, (0)                                                         
+[  106.243718] vcn18: mode operation not allowed                                                                                                    
+[  106.243755] [WMT-CORE][E]opfunc_func_on(1025):func(9) pwr_on fail(-2)                                                                            
+[  106.243760] drivers/misc/mediatek/connectivity/common/conn_soc/core/wmt_core.c, 1026, (0)                                                        
+[  106.243807] [STP] mtk_wcn_stp_psm_enable:[W] STP Not Ready, Dont do Sleep/Wakeup                                                                 
+[  106.243823] [WMT-PLAT][W]wmt_plat_wake_lock_ctrl:WMT-PLAT: wakelock status(1), counter(1)                                                        
+[  106.243892] vcn18: mode operation not allowed                                                                                                    
+[  106.244752] ------------[ cut here ]------------                                                                                                 
+[  106.244779] WARNING: CPU: 1 PID: 597 at drivers/reset/core.c:298 reset_control_reset+0x138/0x170                                                 
+[  106.244784] Modules linked in:                                                                                                                   
+[  106.244798] CPU: 1 PID: 597 Comm: mtk_wmtd Tainted: G        W         5.5.0-rc1-bpi-r2-wifi #25                                                 
+[  106.244802] Hardware name: Mediatek Cortex-A7 (Device Tree)                                                                                      
+[  106.244805] Backtrace:                                                                                                                           
+[  106.244821] [<c010f09c>] (dump_backtrace) from [<c010f43c>] (show_stack+0x20/0x24)                                                               
+[  106.244830]  r7:0000012a r6:600f0013 r5:00000000 r4:c13c491c                                                                                     
+[  106.244841] [<c010f41c>] (show_stack) from [<c0c95e9c>] (dump_stack+0xc8/0xdc)                                                                   
+[  106.244851] [<c0c95dd4>] (dump_stack) from [<c0127f74>] (__warn+0xe0/0x108)                                                                      
+[  106.244859]  r7:0000012a r6:00000009 r5:c05c9ec4 r4:c1034868                                                                                     
+[  106.244867] [<c0127e94>] (__warn) from [<c0128344>] (warn_slowpath_fmt+0x70/0xc0)                                                                
+[  106.244874]  r7:0000012a r6:c1034868 r5:c1304e48 r4:00000000                                                                                     
+[  106.244883] [<c01282d8>] (warn_slowpath_fmt) from [<c05c9ec4>] (reset_control_reset+0x138/0x170)                                                 
+[  106.244892]  r9:00000001 r8:00000000 r7:c10d591c r6:c138ca38 r5:c148dc34 r4:fffffdfb                                                             
+[  106.244906] [<c05c9d8c>] (reset_control_reset) from [<c06c8a40>] (mtk_wcn_consys_hw_reg_ctrl+0x130/0x6d8)                                        
+[  106.244913]  r7:c10d591c r6:c138ca38 r5:c148dc34 r4:c13d8398                                                                                     
+[  106.244923] [<c06c8910>] (mtk_wcn_consys_hw_reg_ctrl) from [<c06c91a0>] (mtk_wcn_consys_hw_pwr_on+0x50/0xc4)                                     
+[  106.244932]  r10:00000001 r9:00000000 r8:00000000 r7:c144af74 r6:e99a5eb4 r5:00000000                                                            
+[  106.244936]  r4:c138ca38                                                                                                                         
+[  106.244948] [<c06c9150>] (mtk_wcn_consys_hw_pwr_on) from [<c06cac3c>] (wmt_plat_pwr_ctrl+0xa0/0x124)                                             
+[  106.244953]  r5:c13d87a0 r4:c138ca24                                                                                                             
+[  106.244964] [<c06cab9c>] (wmt_plat_pwr_ctrl) from [<c06a5fe8>] (wmt_ctrl_hw_pwr_on+0x68/0x88)                                                    
+[  106.244970]  r5:e99a5eb8 r4:c1304e48                                                                                                             
+[  106.244979] [<c06a5f80>] (wmt_ctrl_hw_pwr_on) from [<c06a60d8>] (wmt_ctrl+0x44/0xc0)                                                             
+[  106.244988] [<c06a6094>] (wmt_ctrl) from [<c06a2458>] (wmt_core_ctrl+0x58/0xe4)                                                                  
+[  106.244997] [<c06a2400>] (wmt_core_ctrl) from [<c06a456c>] (opfunc_pwr_on+0xa0/0x24c)                                                            
+[  106.245007]  r10:c144bd6c r9:c1048e74 r8:c0ff869c r7:c144af74 r6:c1046f1c r5:c0d7ab88                                                            
+[  106.245011]  r4:00000002                                                                                                                         
+[  106.245020] [<c06a44cc>] (opfunc_pwr_on) from [<c06a48e4>] (opfunc_func_on+0x1cc/0x324)                                                          
+[  106.245055]  r10:c144b544 r9:c06a9468 r8:c148dc04 r7:c144bd6c r6:c144b528 r5:00000003                                                            
+[  106.245064]  r4:c144af74                                                                                                                         
+[  106.245088] [<c06a4718>] (opfunc_func_on) from [<c06a2374>] (wmt_core_opid_handler+0x34/0x54)                                                    
+[  106.245100]  r8:c148dc04 r7:fffffffd r6:c144b528 r5:c144b500 r4:c144bd6c                                                                         
+[  106.245111] [<c06a2340>] (wmt_core_opid_handler) from [<c06a23c0>] (wmt_core_opid+0x2c/0x6c)                                                     
+[  106.245126] [<c06a2394>] (wmt_core_opid) from [<c06abb7c>] (wmtd_thread+0x174/0x254)                                                             
+[  106.245150] [<c06aba08>] (wmtd_thread) from [<c014d9a0>] (kthread+0x154/0x158)                                                                   
+[  106.245163]  r10:e9a5735c r9:c06aba08 r8:c144b500 r7:eacb3d8c r6:e99a4000 r5:eac8f1c0                                                            
+[  106.245168]  r4:e9a57340                                                                                                                         
+[  106.245179] [<c014d84c>] (kthread) from [<c01010e8>] (ret_from_fork+0x14/0x2c)                                                                   
+[  106.245191] Exception stack(0xe99a5fb0 to 0xe99a5ff8)                                                                                            
+[  106.245211] 5fa0:                                     00000000 00000000 00000000 00000000                                                        
+[  106.245222] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000                                                        
+[  106.245230] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000                                                                          
+[  106.245239]  r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:c014d84c                                                            
+[  106.245254]  r4:eac8f1c0 r3:00000001                                                                                                             
+[  106.245264] ---[ end trace 37e62032785e0aef ]---                                                                                                 
+[  106.245566] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.283163] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.323161] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.363160] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.403158] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.443160] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.483192] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.523159] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.563160] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.603159] [WMT-CONSYS-HW][E]mtk_wcn_consys_hw_reg_ctrl(291):Read CONSYS chipId(0xfffff093)                                                     
+[  106.703471] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6620.defAnt'.                                                                 
+[  106.703483] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6628.defAnt'.                                                                 
+[  106.703490] [WMT-CONF][E]wmt_conf_parse_pair(323):unknown field 'mt6630.defAnt'.                                                                 
+[  106.703853] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(740):**********************ERROR, ERROR, ERROR**************************                       
+[  106.703866] MTK-BTIF-DMA[E]hal_tx_dma_irq_handler(745):BTIF Tx IRQ happened 512 times (continiously), between 1576335016.740705 and 410593.410593
+[  110.323182] [WMT-LIB][E]wmt_lib_put_act_op(1056):wait completion timeout, opId(3), show wmtd_thread stack!                                       
+[  110.323194] Backtrace:                                                                                                                           
+[  110.323216] [<c0cafa68>] (__schedule) from [<c0cb00fc>] (schedule+0x74/0xf8)                                                                     
+[  110.323227]  r10:eeda9440 r9:eeda9440 r8:ffffb46e r7:e99a5cc4 r6:c1303d00 r5:ee445140                                                            
+[  110.323231]  r4:ffffe000                                                                                                                         
+[  110.323242] [<c0cb0088>] (schedule) from [<c0cb46a4>] (schedule_timeout+0x194/0x320)                                                             
+[  110.323247]  r5:c1304e48 r4:ffffbc3e                                                                                                             
+[  110.323260] [<c0cb4510>] (schedule_timeout) from [<c06c6e8c>] (wmt_dev_rx_timeout+0x13c/0x1d8)                                                   
+[  110.323270]  r10:c0d7ad14 r9:00000000 r8:000007d0 r7:e99a5d10 r6:c1304e48 r5:00000000                                                            
+[  110.323274]  r4:c14856a0                                                                                                                         
+[  110.323284] [<c06c6d50>] (wmt_dev_rx_timeout) from [<c06a577c>] (wmt_ctrl_rx+0x10c/0x2a4)                                                        
+[  110.323294]  r9:e99a5e24 r8:00000010 r7:c144b500 r6:00004e20 r5:00000010 r4:c148dc04                                                             
+[  110.323303] [<c06a5670>] (wmt_ctrl_rx) from [<c06a60d8>] (wmt_ctrl+0x44/0xc0)                                                                    
+[  110.323312]  r10:c144bd6c r9:c1048e74 r8:e99a5e78 r7:00000000 r6:c1304e48 r5:00000010                                                            
+[  110.323316]  r4:c1304e48                                                                                                                         
+[  110.323325] [<c06a6094>] (wmt_ctrl) from [<c06a1148>] (wmt_core_rx+0x44/0xb0)                                                                    
+[  110.323333] [<c06a1104>] (wmt_core_rx) from [<c06a3e30>] (wmt_core_reg_rw_raw+0xd4/0x1f4)                                                        
+[  110.323338]  r5:00000010 r4:c138c2a8                                                                                                             
+[  110.323348] [<c06a3d5c>] (wmt_core_reg_rw_raw) from [<c06a4058>] (wmt_core_stp_init+0x108/0x54c)                                                 
+[  110.323357]  r9:c1048e74 r8:c148dc04 r7:c144b5ac r6:c1304e48 r5:c144af74 r4:00000000                                                             
+[  110.323366] [<c06a3f50>] (wmt_core_stp_init) from [<c06a45cc>] (opfunc_pwr_on+0x100/0x24c)                                                       
+[  110.323375]  r8:c0ff869c r7:c144af74 r6:c1046f1c r5:c0d7ab88 r4:00000002                                                                         
+[  110.323383] [<c06a44cc>] (opfunc_pwr_on) from [<c06a48e4>] (opfunc_func_on+0x1cc/0x324)                                                          
+[  110.323393]  r10:c144b544 r9:c06a9468 r8:c148dc04 r7:c144bd6c r6:c144b528 r5:00000003                                                            
+[  110.323396]  r4:c144af74                                                                                                                         
+[  110.323405] [<c06a4718>] (opfunc_func_on) from [<c06a2374>] (wmt_core_opid_handler+0x34/0x54)                                                    
+[  110.323413]  r8:c148dc04 r7:fffffffd r6:c144b528 r5:c144b500 r4:c144bd6c                                                                         
+[  110.323422] [<c06a2340>] (wmt_core_opid_handler) from [<c06a23c0>] (wmt_core_opid+0x2c/0x6c)                                                     
+[  110.323432] [<c06a2394>] (wmt_core_opid) from [<c06abb7c>] (wmtd_thread+0x174/0x254)                                                             
+[  110.323442] [<c06aba08>] (wmtd_thread) from [<c014d9a0>] (kthread+0x154/0x158)                                                                   
+[  110.323452]  r10:e9a5735c r9:c06aba08 r8:c144b500 r7:eacb3d8c r6:e99a4000 r5:eac8f1c0                                                            
+[  110.323455]  r4:e9a57340                                                                                                                         
+[  110.323465] [<c014d84c>] (kthread) from [<c01010e8>] (ret_from_fork+0x14/0x2c)                                                                   
+[  110.323470] Exception stack(0xe99a5fb0 to 0xe99a5ff8)                                                                                            
+[  110.323477] 5fa0:                                     00000000 00000000 00000000 00000000                                                        
+[  110.323486] 5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000                                                        
+[  110.323493] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000                                                                          
+[  110.323502]  r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:c014d84c                                                            
+[  110.323506]  r4:eac8f1c0 r3:00000001                                                                                                             
+[  110.323516] [STP] mtk_wcn_stp_psm_enable:[W] STP Not Ready, Dont do Sleep/Wakeup                                                                 
+[  110.323527] [MTK-WIFI] WIFI_write: WMT turn on WIFI fail!                                                                                        
+[  110.383852] [MTK-WIFI] WIFI_close: WIFI_close: major 155 minor 0 (pid 592)   
