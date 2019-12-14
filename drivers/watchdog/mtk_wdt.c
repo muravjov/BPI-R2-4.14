@@ -85,21 +85,21 @@
 static bool nowayout = WATCHDOG_NOWAYOUT;
 static unsigned int timeout = WDT_MAX_TIMEOUT;
 
-/*struct toprgu_reset {
+struct toprgu_reset {
 	spinlock_t lock;
 	void __iomem *toprgu_swrst_base;
 	int regofs;
 	struct reset_controller_dev rcdev;
-};*/
+};
 
 struct mtk_wdt_dev {
 	struct watchdog_device wdt_dev;
 	void __iomem *wdt_base;
 	int wdt_irq_id;
-	//struct notifier_block restart_handler;
-	//struct toprgu_reset reset_controller;
+	struct notifier_block restart_handler;
+	struct toprgu_reset reset_controller;
 };
-/*
+
 static void __iomem *toprgu_base;
 static struct watchdog_device *wdt_dev;
 
@@ -187,11 +187,11 @@ static int mtk_reset_handler(struct notifier_block *this, unsigned long mode,
 
 	mtk_wdt = container_of(this, struct mtk_wdt_dev, restart_handler);
 	wdt_base = mtk_wdt->wdt_base;
-*/
+
 	/* WDT_STATUS will be cleared to  zero after writing to WDT_MODE, so we backup it in WDT_NONRST_REG,
 	  * and then print it out in mtk_wdt_probe() after reset
 	  */
-/*	writel(__raw_readl(wdt_base + WDT_STATUS), wdt_base + WDT_NONRST_REG);
+	writel(__raw_readl(wdt_base + WDT_STATUS), wdt_base + WDT_NONRST_REG);
 
 	reg = ioread32(wdt_base + WDT_MODE);
 	reg &= ~(WDT_MODE_DUAL_EN | WDT_MODE_IRQ_EN | WDT_MODE_EN);
@@ -220,7 +220,7 @@ static int mtk_reset_handler(struct notifier_block *this, unsigned long mode,
 	}
 	return NOTIFY_DONE;
 }
-*/
+
 static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
 			   unsigned long action, void *data)
 {
@@ -396,7 +396,7 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 		return err;
 	}
 
-	//toprgu_base = mtk_wdt->wdt_base;
+	toprgu_base = mtk_wdt->wdt_base;
 	//wdt_dev = &mtk_wdt->wdt_dev;
 
 	mtk_wdt->wdt_dev.info = &mtk_wdt_info;
@@ -422,7 +422,7 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 	dev_info(dev, "Watchdog enabled (timeout=%d sec, nowayout=%d)\n",
 		 mtk_wdt->wdt_dev.timeout, nowayout);
 
-/*	mtk_wdt->restart_handler.notifier_call = mtk_reset_handler;
+	mtk_wdt->restart_handler.notifier_call = mtk_reset_handler;
 	mtk_wdt->restart_handler.priority = 128;
 
 	if (arm_pm_restart) {
@@ -436,7 +436,7 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 		if (err)
 			dev_warn(&pdev->dev,
 				"cannot register restart handler (err=%d)\n", err);
-	}*/
+	}
 
 	dev_info(&pdev->dev, "Watchdog enabled (timeout=%d sec, nowayout=%d)\n",
 			mtk_wdt->wdt_dev.timeout, nowayout);
@@ -444,7 +444,7 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 	writel(WDT_REQ_MODE_KEY | (__raw_readl(mtk_wdt->wdt_base + WDT_REQ_MODE) &
 		(~WDT_REQ_MODE_DEBUG_EN)), mtk_wdt->wdt_base + WDT_REQ_MODE);
 
-	//toprgu_register_reset_controller(pdev, WDT_SWSYSRST);
+	toprgu_register_reset_controller(pdev, WDT_SWSYSRST);
 
 	/* enable scpsys thermal and thermal_controller request, and set to reset directly mode */
 /*	tmp = ioread32(mtk_wdt->wdt_base + WDT_REQ_MODE) | (1 << 18) | (1 << 0);
