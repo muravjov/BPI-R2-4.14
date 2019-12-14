@@ -16,31 +16,15 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
-#include <linux/init.h>
-#include <linux/proc_fs.h>
-#include <linux/uaccess.h>
 #include <linux/of.h>
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
-#ifdef CONFIG_FIQ_GLUE
-#include <linux/irqchip/mtk-gic-extend.h>
-#include <mt-plat/aee.h>
-#endif
 #include <linux/types.h>
 #include <linux/watchdog.h>
-#include <linux/notifier.h>
-#include <linux/reboot.h>
 #include <linux/delay.h>
 #include <linux/reset-controller.h>
-#include <linux/reset.h>
-#include <linux/sched.h>
 #include <linux/sched/debug.h>
 #include <linux/sched/signal.h>
-#include <asm/system_misc.h>
-#include <linux/seq_file.h>
-#ifdef CONFIG_MT6397_MISC
-#include <linux/mfd/mt6397/rtc_misc.h>
-#endif
 
 #define WDT_MAX_TIMEOUT		31
 #define WDT_MIN_TIMEOUT		1
@@ -59,7 +43,6 @@
 #define WDT_MODE_EXRST_EN	(1 << 2)
 #define WDT_MODE_IRQ_EN		(1 << 3)
 #define WDT_MODE_AUTO_START	(1 << 4)
-#define WDT_MODE_IRQ_LVL	(1 << 5)
 #define WDT_MODE_DUAL_EN	(1 << 6)
 #define WDT_MODE_KEY		0x22000000
 
@@ -72,12 +55,6 @@
 
 #define WDT_SWSYSRST		0x18
 #define WDT_SWSYSRST_KEY	0x88000000
-
-#define WDT_REQ_MODE 0x30
-#define WDT_REQ_MODE_KEY 0x33000000
-#define WDT_REQ_IRQ_EN 0x34
-#define WDT_REQ_IRQ_KEY 0x44000000
-#define WDT_REQ_MODE_DEBUG_EN 0x80000
 
 #define DRV_NAME		"mtk-wdt"
 #define DRV_VERSION		"1.0"
@@ -101,7 +78,6 @@ struct mtk_wdt_dev {
 };
 
 static void __iomem *toprgu_base;
-//static struct watchdog_device *wdt_dev;
 
 static int toprgu_reset_assert(struct reset_controller_dev *rcdev,
 			      unsigned long id)
@@ -177,50 +153,7 @@ static void toprgu_register_reset_controller(struct platform_device *pdev, int r
 	if (ret)
 		pr_err("could not register toprgu reset controller: %d\n", ret);
 }
-/*
-static int mtk_reset_handler(struct notifier_block *this, unsigned long mode,
-				void *cmd)
-{
-	struct mtk_wdt_dev *mtk_wdt;
-	void __iomem *wdt_base;
-	u32 reg;
 
-	mtk_wdt = container_of(this, struct mtk_wdt_dev, restart_handler);
-	wdt_base = mtk_wdt->wdt_base;
-*/
-	/* WDT_STATUS will be cleared to  zero after writing to WDT_MODE, so we backup it in WDT_NONRST_REG,
-	  * and then print it out in mtk_wdt_probe() after reset
-	  */
-/*	writel(__raw_readl(wdt_base + WDT_STATUS), wdt_base + WDT_NONRST_REG);
-
-	reg = ioread32(wdt_base + WDT_MODE);
-	reg &= ~(WDT_MODE_DUAL_EN | WDT_MODE_IRQ_EN | WDT_MODE_EN);
-	reg |= WDT_MODE_KEY;
-	iowrite32(reg, wdt_base + WDT_MODE);
-
-	if (cmd && !strcmp(cmd, "rpmbpk")) {
-		iowrite32(ioread32(wdt_base + WDT_NONRST_REG2) | (1 << 0), wdt_base + WDT_NONRST_REG2);
-	} else if (cmd && !strcmp(cmd, "recovery")) {
-		iowrite32(ioread32(wdt_base + WDT_NONRST_REG2) | (1 << 1), wdt_base + WDT_NONRST_REG2);
-		#ifdef CONFIG_MT6397_MISC
-		mtk_misc_mark_recovery();
-		#endif
-	} else if (cmd && !strcmp(cmd, "bootloader")) {
-		iowrite32(ioread32(wdt_base + WDT_NONRST_REG2) | (1 << 2), wdt_base + WDT_NONRST_REG2);
-		#ifdef CONFIG_MT6397_MISC
-		mtk_misc_mark_fast();
-		#endif
-	}
-
-	if (!arm_pm_restart) {
-		while (1) {
-			writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
-			mdelay(5);
-		}
-	}
-	return NOTIFY_DONE;
-}
-*/
 static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
 			   unsigned long action, void *data)
 {
@@ -295,8 +228,6 @@ static int mtk_wdt_start(struct watchdog_device *wdt_dev)
 
 	reg = ioread32(wdt_base + WDT_MODE);
 	reg &= ~(WDT_MODE_IRQ_EN | WDT_MODE_DUAL_EN);
-	//reg |= (WDT_MODE_DUAL_EN | WDT_MODE_IRQ_EN | WDT_MODE_EXRST_EN);
-	//reg &= ~(WDT_MODE_IRQ_LVL | WDT_MODE_EXT_POL_HIGH);
 	reg |= (WDT_MODE_EN | WDT_MODE_KEY);
 	iowrite32(reg, wdt_base + WDT_MODE);
 
