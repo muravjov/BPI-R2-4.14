@@ -101,7 +101,7 @@ struct mtk_wdt_dev {
 };
 
 static void __iomem *toprgu_base;
-static struct watchdog_device *wdt_dev;
+//static struct watchdog_device *wdt_dev;
 
 static int toprgu_reset_assert(struct reset_controller_dev *rcdev,
 			      unsigned long id)
@@ -177,7 +177,7 @@ static void toprgu_register_reset_controller(struct platform_device *pdev, int r
 	if (ret)
 		pr_err("could not register toprgu reset controller: %d\n", ret);
 }
-
+/*
 static int mtk_reset_handler(struct notifier_block *this, unsigned long mode,
 				void *cmd)
 {
@@ -187,11 +187,11 @@ static int mtk_reset_handler(struct notifier_block *this, unsigned long mode,
 
 	mtk_wdt = container_of(this, struct mtk_wdt_dev, restart_handler);
 	wdt_base = mtk_wdt->wdt_base;
-
+*/
 	/* WDT_STATUS will be cleared to  zero after writing to WDT_MODE, so we backup it in WDT_NONRST_REG,
 	  * and then print it out in mtk_wdt_probe() after reset
 	  */
-	writel(__raw_readl(wdt_base + WDT_STATUS), wdt_base + WDT_NONRST_REG);
+/*	writel(__raw_readl(wdt_base + WDT_STATUS), wdt_base + WDT_NONRST_REG);
 
 	reg = ioread32(wdt_base + WDT_MODE);
 	reg &= ~(WDT_MODE_DUAL_EN | WDT_MODE_IRQ_EN | WDT_MODE_EN);
@@ -220,7 +220,7 @@ static int mtk_reset_handler(struct notifier_block *this, unsigned long mode,
 	}
 	return NOTIFY_DONE;
 }
-
+*/
 static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
 			   unsigned long action, void *data)
 {
@@ -294,8 +294,9 @@ static int mtk_wdt_start(struct watchdog_device *wdt_dev)
 		return ret;
 
 	reg = ioread32(wdt_base + WDT_MODE);
-	reg |= (WDT_MODE_DUAL_EN | WDT_MODE_IRQ_EN | WDT_MODE_EXRST_EN);
-	reg &= ~(WDT_MODE_IRQ_LVL | WDT_MODE_EXT_POL_HIGH);
+	reg &= ~(WDT_MODE_IRQ_EN | WDT_MODE_DUAL_EN);
+	//reg |= (WDT_MODE_DUAL_EN | WDT_MODE_IRQ_EN | WDT_MODE_EXRST_EN);
+	//reg &= ~(WDT_MODE_IRQ_LVL | WDT_MODE_EXT_POL_HIGH);
 	reg |= (WDT_MODE_EN | WDT_MODE_KEY);
 	iowrite32(reg, wdt_base + WDT_MODE);
 
@@ -402,28 +403,6 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 
 	dev_info(dev, "Watchdog enabled (timeout=%d sec, nowayout=%d)\n",
 		 mtk_wdt->wdt_dev.timeout, nowayout);
-
-	mtk_wdt->restart_handler.notifier_call = mtk_reset_handler;
-	mtk_wdt->restart_handler.priority = 128;
-/*
-	if (arm_pm_restart) {
-		dev_info(&pdev->dev, "register restart_handler on reboot_notifier_list for psci reset\n");
-		err = register_reboot_notifier(&mtk_wdt->restart_handler);
-		if (err != 0)
-			dev_warn(&pdev->dev,
-				"cannot register reboot notifier (err=%d)\n", err);
-	} else {
-		err = register_restart_handler(&mtk_wdt->restart_handler);
-		if (err)
-			dev_warn(&pdev->dev,
-				"cannot register restart handler (err=%d)\n", err);
-	}
-
-	dev_info(&pdev->dev, "Watchdog enabled (timeout=%d sec, nowayout=%d)\n",
-			mtk_wdt->wdt_dev.timeout, nowayout);
-*/
-//	writel(WDT_REQ_MODE_KEY | (__raw_readl(mtk_wdt->wdt_base + WDT_REQ_MODE) &
-//		(~WDT_REQ_MODE_DEBUG_EN)), mtk_wdt->wdt_base + WDT_REQ_MODE);
 
 	//without this toprgu and the (de)assert functions mt6625l wifi does not work
 	toprgu_register_reset_controller(pdev, WDT_SWSYSRST);
