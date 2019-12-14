@@ -1935,8 +1935,6 @@ static int mt7531_sgmii_setup_mode_force(struct mt7530_priv *priv, u32 port,
 					 const struct phylink_link_state *state)
 {
 	u32 val;
-	ktime_t timeout;
-	u32 timeout_us;
 
 	if (port != 5 && port != 6)
 		return -EINVAL;
@@ -1981,28 +1979,6 @@ static int mt7531_sgmii_setup_mode_force(struct mt7530_priv *priv, u32 port,
 	val = mt7530_read(priv, MT7531_QPHY_PWR_STATE_CTRL(port));
 	val &= ~MT7531_SGMII_PHYA_PWD;
 	mt7530_write(priv, MT7531_QPHY_PWR_STATE_CTRL(port), val);
-
-        /* Step 7 : Polling SGMII_LINK_STATUS */
-        timeout_us = 2000000;
-        timeout = ktime_add_us(ktime_get(), timeout_us);
-        while (1) {
-                val = mt7530_read(priv, MT7531_PCS_CONTROL_1(port));
-                dev_info(priv->dev,"%s:%d 0x%x",__FUNCTION__,__LINE__,val);
-                //val &= SGMII_LINK_STATUS;
-
-                if (val & MT7531_SGMII_LINK_STATUS) break;
-                if (val & MT7531_SGMII_PCS_FAULT) {
-                        //read PCS_STATUS_2 (00005010) bit 10=rx empty bit 11=tx full
-                        val = mt7530_read(priv, MT7531_PCS_STATUS_2(port));
-                        dev_info(priv->dev,"%s:%d 0x%x TX:%lx RX:%lx",__FUNCTION__,__LINE__,val,val & MT7531_SGMII_TX_FAULT_LATCH,val & MT7531_SGMII_RX_FAULT_LATCH);
-                        //mt753x_reg_write(gsw, PCS_CONTROL_1(port_base),val | SGMII_ISOLATE);
-                        //timeout = ktime_add_us(ktime_get(), timeout_us);
-                }
-
-                if (ktime_compare(ktime_get(), timeout) > 0)
-                        return -ETIMEDOUT;
-        }
-
 
 	return 0;
 }
