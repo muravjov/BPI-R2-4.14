@@ -72,8 +72,6 @@ struct toprgu_reset {
 struct mtk_wdt_dev {
 	struct watchdog_device wdt_dev;
 	void __iomem *wdt_base;
-	int wdt_irq_id;
-	struct notifier_block restart_handler;
 	struct toprgu_reset reset_controller;
 };
 
