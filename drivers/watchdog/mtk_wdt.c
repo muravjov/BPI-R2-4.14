@@ -77,8 +77,6 @@ struct mtk_wdt_dev {
 	struct toprgu_reset reset_controller;
 };
 
-static void __iomem *toprgu_base;
-
 static int toprgu_reset_assert(struct reset_controller_dev *rcdev,
 			      unsigned long id)
 {
@@ -250,36 +248,6 @@ static const struct watchdog_ops mtk_wdt_ops = {
 	.restart	= mtk_wdt_restart,
 };
 
-static void wdt_report_info(void)
-{
-	struct task_struct *task;
-
-	task = &init_task;
-	pr_debug("Qwdt: -- watchdog time out\n");
-
-	for_each_process(task) {
-		if (task->state == 0) {
-			pr_debug("PID: %d, name: %s\n backtrace:\n", task->pid, task->comm);
-			show_stack(task, NULL);
-			pr_debug("\n");
-		}
-	}
-
-	pr_debug("backtrace of current task:\n");
-	show_stack(NULL, NULL);
-	pr_debug("Qwdt: -- watchdog time out\n");
-}
-
-static irqreturn_t mtk_wdt_isr(int irq, void *dev_id)
-{
-	pr_err("fwq mtk_wdt_isr\n");
-
-	wdt_report_info();
-	BUG();
-
-	return IRQ_HANDLED;
-}
-
 static int mtk_wdt_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -297,8 +265,6 @@ static int mtk_wdt_probe(struct platform_device *pdev)
 		return PTR_ERR(mtk_wdt->wdt_base);
 
 	pr_err("MTK_WDT_NONRST_REG(%x)\n", __raw_readl(mtk_wdt->wdt_base + WDT_NONRST_REG));
-
-	toprgu_base = mtk_wdt->wdt_base;
 
 	mtk_wdt->wdt_dev.info = &mtk_wdt_info;
 	mtk_wdt->wdt_dev.ops = &mtk_wdt_ops;
