@@ -137,6 +137,29 @@
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x80000000>;
 	};
+
+	otg: usb@11200000 {
+		compatible = "mediatek,mt2701-musb",
+			     "mediatek,mtk-musb";
+		reg = <0 0x11200000 0 0x1000>;
+		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_LOW>;
+		interrupt-names = "mc";
+		phys = <&u2port2 PHY_TYPE_USB2>;
+		dr_mode = "otg";
+		clocks = <&pericfg CLK_PERI_USB0>,
+			 <&pericfg CLK_PERI_USB0_MCU>,
+			 <&pericfg CLK_PERI_USB_SLV>;
+		clock-names = "main","mcu","univpll";
+		power-domains = <&scpsys MT2701_POWER_DOMAIN_IFR_MSC>;
+		usb-role-switch;
+		connector{
+			compatible = "gpio-usb-b-connector", "usb-b-connector";
+			type = "micro";
+			id-gpios = <&pio 44 GPIO_ACTIVE_HIGH>;
+			vbus-supply = <&usb_vbus>;
+		};
+	};
+
 };
 
 &bls {

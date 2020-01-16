@@ -547,6 +547,11 @@ CONFIG_USB_SUPPORT=y
 CONFIG_USB_COMMON=y
 # CONFIG_USB_ARCH_HAS_HCD=y ?
 
+#OTG
+CONFIG_USB_MUSB_HDRC=m
+CONFIG_NOP_USB_XCEIV=m
+CONFIG_USB_MUSB_MEDIATEK=m
+
 #additional NET (e.g. tunneling incl. openvpn,vlan-base-support)
 CONFIG_TUN=m
 #vlan
