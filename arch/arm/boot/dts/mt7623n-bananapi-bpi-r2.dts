@@ -6,6 +6,7 @@
 
 /dts-v1/;
 #include <dt-bindings/input/input.h>
+#include <dt-bindings/gpio/gpio.h>
 #include "mt7623.dtsi"
 #include "mt6323.dtsi"
 
@@ -138,6 +139,7 @@
 		reg = <0 0x80000000 0 0x80000000>;
 	};
 
+/*
 	otg: usb@11200000 {
 		compatible = "mediatek,mt2701-musb",
 			     "mediatek,mtk-musb";
@@ -177,6 +179,7 @@
 			interrupts = <75 IRQ_TYPE_LEVEL_HIGH>;
 		};
 	};
+*/
 
 };
 
@@ -187,6 +190,15 @@
 		bls_out: endpoint {
 			remote-endpoint = <&dpi0_in>;
 		};
+	};
+
+	usb_vbus: regulator@0 {
+		compatible = "regulator-fixed";
+		regulator-name = "usb_vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&pio 45 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
 	};
 };
 
@@ -416,7 +428,7 @@
 				bias-disable;
 		};
 	};
-
+/*
 	usb_iddig: iddig_irq_init{
 		pins_cmd_dat {
 			pinmux = <MT7623_PIN_44_NCEB1_FUNC_GPIO44>;
@@ -445,7 +457,9 @@
 			output-high;
 		};
 	};
+*/
 };
+
 &consys {
 	mediatek,pwrap-regmap = <&pwrap>;
 	pinctrl-names = "default";
@@ -495,6 +509,17 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins_a>;
 	status = "okay";
+};
+
+&usb0 {
+	status = "okay";
+	usb-role-switch;
+	connector{
+		compatible = "gpio-usb-b-connector", "usb-b-connector";
+		type = "micro";
+		id-gpios = <&pio 44 GPIO_ACTIVE_HIGH>;
+		vbus-supply = <&usb_vbus>;
+	};
 };
 
 &uart1 {
