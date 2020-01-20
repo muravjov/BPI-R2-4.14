@@ -518,7 +518,7 @@
 		compatible = "gpio-usb-b-connector", "usb-b-connector";
 		type = "micro";
 		id-gpios = <&pio 44 GPIO_ACTIVE_HIGH>;
-		vbus-supply = <&mt6323_vusb_reg>;
+		vbus-supply = <&usb_vbus>;
 	};
 };
 
