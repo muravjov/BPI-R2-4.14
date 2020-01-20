@@ -191,15 +191,6 @@
 			remote-endpoint = <&dpi0_in>;
 		};
 	};
-
-	usb_vbus: regulator@0 {
-		compatible = "regulator-fixed";
-		regulator-name = "usb_vbus";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		gpio = <&pio 45 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-	};
 };
 
 &btif {
@@ -428,6 +419,15 @@
 				bias-disable;
 		};
 	};
+
+	usb_vbus: regulator@0 {
+		compatible = "regulator-fixed";
+		regulator-name = "usb_vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&pio 45 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+	};
 /*
 	usb_iddig: iddig_irq_init{
 		pins_cmd_dat {
@@ -514,6 +514,7 @@
 &usb0 {
 	status = "okay";
 	usb-role-switch;
+	vbus-supply = <&mt6323_vusb_reg>;
 	connector{
 		compatible = "gpio-usb-b-connector", "usb-b-connector";
 		type = "micro";
