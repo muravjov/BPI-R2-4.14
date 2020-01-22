@@ -34,6 +34,7 @@ static int lima_pmu_wait_cmd(struct lima_ip *ip)
 
 int lima_pmu_init(struct lima_ip *ip)
 {
+	printk ("LIMA: Entering pmu_init.\n");
 	int err;
 	u32 stat;
 	struct lima_device *dev = ip->dev;
@@ -44,16 +45,21 @@ int lima_pmu_init(struct lima_ip *ip)
 	if (of_property_read_u32(np, "switch-delay", &ip->data.switch_delay))
 		ip->data.switch_delay = 0xff;
 
+	printk("LIMA: pmu_init sw_delay:%u\n",ip->data.switch_delay);
+
 	pmu_write(INT_MASK, 0);
 	pmu_write(SW_DELAY, ip->data.switch_delay);
 
 	/* status reg 1=off 0=on */
 	stat = pmu_read(STATUS);
 
+	printk ("LIMA: pmu_init stat:%u\n",stat);
+
 	/* power up all ip */
 	if (stat) {
 		pmu_write(POWER_UP, stat);
 		err = lima_pmu_wait_cmd(ip);
+		printk ("LIMA: pmu_init Err:%i\n",err);
 		if (err)
 			return err;
 	}

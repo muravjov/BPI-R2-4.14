@@ -281,13 +281,17 @@ int lima_device_init(struct lima_device *ldev)
 
 	dma_set_coherent_mask(ldev->dev, DMA_BIT_MASK(32));
 
+	printk("LIMA_INIT: lima_clk_init\n");
 	err = lima_clk_init(ldev);
+	printk("LIMA_INIT: lima_clk_init_err:%i\n",err);
 	if (err) {
 		dev_err(ldev->dev, "clk init fail %d\n", err);
 		return err;
 	}
 
-	if ((err = lima_regulator_init(ldev))) {
+	err = lima_regulator_init(ldev);
+	printk("LIMA_INIT: lima_regulator_init_err:%i\n",err);
+	if (err) {
 		dev_err(ldev->dev, "regulator init fail %d\n", err);
 		goto err_out0;
 	}
@@ -299,6 +303,7 @@ int lima_device_init(struct lima_device *ldev)
 	ldev->empty_vm = lima_vm_create(ldev);
 	if (!ldev->empty_vm) {
 		err = -ENOMEM;
+		printk("LIMA_INIT: lima_empty_vm:%i\n",err);
 		goto err_out2;
 	}
 
@@ -310,8 +315,10 @@ int lima_device_init(struct lima_device *ldev)
 			&ldev->dlbu_dma, GFP_KERNEL);
 		if (!ldev->dlbu_cpu) {
 			err = -ENOMEM;
+			printk("LIMA_INIT: lima_dlbu_cpu:%i\n",err);
 			goto err_out3;
 		}
+		printk("LIMA_INIT: lima_dlbu_cpu no err:%i\n",err);
 	}
 	else
 		ldev->va_end = LIMA_VA_RESERVE_END;
@@ -326,6 +333,7 @@ int lima_device_init(struct lima_device *ldev)
 
 	for (i = 0; i < lima_ip_num; i++) {
 		err = lima_init_ip(ldev, i);
+		dev_err(ldev->dev, "Lima_init_ip: ip:%i, err:%i\n",i,err);
 		if (err)
 			goto err_out5;
 	}
