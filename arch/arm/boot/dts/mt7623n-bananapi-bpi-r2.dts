@@ -137,13 +137,6 @@
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x80000000>;
 	};
-
-	vdd_fixed_vgpu_reg: fixedregulator@0 {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_fixed_vgpu";
-		regulator-min-microvolt = <1150000>;
-		regulator-max-microvolt = <1150000>;
-	};
 };
 
 &bls {
@@ -313,11 +306,6 @@
 &i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c1_pins_a>;
-	status = "okay";
-};
-
-&mali {
-	vdd_g3d-supply = <&vdd_fixed_vgpu_reg>;
 	status = "okay";
 };
 
