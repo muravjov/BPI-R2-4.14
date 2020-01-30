@@ -815,6 +815,9 @@
 			ranges;
 			status = "disabled";
 
+			interrupt-parent = <&pcie_intc0>;
+			interrupts = <0>;
+
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
 					<0 0 0 2 &pcie_intc0 1>,
@@ -834,6 +837,9 @@
 			#interrupt-cells = <1>;
 			ranges;
 			status = "disabled";
+
+			interrupt-parent = <&pcie_intc1>;
+			interrupts = <0>;
 
 			interrupt-map-mask = <0 0 0 7>;
 			interrupt-map = <0 0 0 1 &pcie_intc1 0>,
