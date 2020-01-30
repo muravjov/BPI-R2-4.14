@@ -1097,6 +1097,24 @@ static int mtk_pcie_setup(struct mtk_pcie *pcie)
 	return 0;
 }
 
+int mtk_pcie_add_device_cb(struct pci_dev *dev) {
+
+       struct mtk_pcie_port *port = mtk_pcie_find_port(dev->bus, dev->devfn);
+
+       if(!port) {
+               dev_err(&dev->dev,"%s: unable to identify mtk_pcie port for this device\n",__func__);
+               return -1;
+       }
+
+       // set msi domain for devices on this controller's root bus only (gets derived for any child busses)
+       if(pci_is_root_bus(dev->bus) && port->pcie->busnr == dev->bus->number) {
+               dev_info(&dev->dev,"%s: setting MSI domain of port %u (at %p)\n",__func__,port->slot,port->msi_domain);
+               dev_set_msi_domain(&dev->dev,port->msi_domain);
+       }
+
+       return 0;
+}
+
 static int mtk_pcie_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -1125,6 +1143,7 @@ static int mtk_pcie_probe(struct platform_device *pdev)
 	host->map_irq = of_irq_parse_and_map_pci;
 	host->swizzle_irq = pci_common_swizzle;
 	host->sysdata = pcie;
+	host->add_device = mtk_pcie_add_device_cb;
 
 	err = pci_host_probe(host);
 	if (err)
