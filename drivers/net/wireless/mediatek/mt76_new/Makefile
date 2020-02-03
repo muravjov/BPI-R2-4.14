@@ -9,6 +9,10 @@ obj-$(CONFIG_MT76x2_COMMON) += mt76x2/
 obj-$(CONFIG_MT76x0_COMMON) += mt76x0/
 obj-$(CONFIG_MT7615E) += mt7615/
 
+CFLAGS_trace.o := -I$(src)
+CFLAGS_usb_trace.o := -I$(src)
+CFLAGS_mt76x02_trace.o := -I$(src)
+
 mt76-y := \
 	mmio.o util.o trace.o dma.o mac80211.o debugfs.o eeprom.o \
 	tx.o agg-rx.o mcu.o
