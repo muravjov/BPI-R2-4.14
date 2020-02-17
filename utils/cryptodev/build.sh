@@ -5,7 +5,7 @@ kerneldir=$(dirname $(dirname $(pwd)))
 kernelver=$(cd ../..;make kernelversion)
 cd cryptodev-linux
 make KERNEL_DIR=$kerneldir clean
-make KERNEL_DIR=$kerneldir CROSS_COMPILE=arm-linux-gnueabihf- ARCH=arm
+make KERNEL_DIR=$kerneldir ARCH=arm64 CROSS_COMPILE='ccache aarch64-linux-gnu-'
 if [[ $? == 0 ]];then
   echo "build successful"
   #cp cryptodev.ko $kerneldir/../SD/BPI-ROOT/lib/modules/
